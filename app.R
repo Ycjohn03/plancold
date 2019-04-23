@@ -7,7 +7,6 @@ library(shiny)
 library(ggplot2)
 library(gridExtra)
 library(xts)
-
 ui <- fluidPage(theme = shinytheme("superhero"),titlePanel("Hourly Data"),
                 fluidRow(
                   column(6,
@@ -17,7 +16,9 @@ ui <- fluidPage(theme = shinytheme("superhero"),titlePanel("Hourly Data"),
                                               choices = ( nnamme$V1 )),
                                   selectInput(inputId = "variable02", label = "Y-axis:",
                                               choices = ( nnamme$V1))),
-                           column(12,plotOutput(outputId = "p1plot"))
+                           column(12,plotOutput(outputId = "p1plot")),
+                           h2("correlation coefficient"),
+                           column(12,verbatimTextOutput("correlation"))
                          )),
                   column(6,
                          fluidRow(
@@ -27,7 +28,6 @@ ui <- fluidPage(theme = shinytheme("superhero"),titlePanel("Hourly Data"),
                                   plotOutput(outputId = "p3plot"))))
                 )
 )
-
 
 
 server <- function(input, output) {
@@ -45,6 +45,10 @@ server <- function(input, output) {
   output$p3plot <- renderPlot({
     myData01 <- subset(data.t_hour, select=c(variable01(),variable02()))
     ggplot(data=myData01,aes_string(index(myData01),variable02()))+geom_line(color='#56B4E2')+ xlab("Date") + ylab(variable02())
+  })
+  output$correlation <- renderPrint({
+    myData01 <- subset(data.t_hour, select=c(variable01(),variable02()))
+    cor(myData01, use="complete.obs")[2,1]
   })
 }
 shinyApp(ui, server)
