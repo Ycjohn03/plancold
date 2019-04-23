@@ -3,7 +3,12 @@ data.t_hour <- readRDS("data.t_hour.rds")
 names(data.t_hour) <- (nnamme$V1)
 
 library(shinythemes)
-ui <- fluidPage(theme = shinytheme("superhero"),
+library(shiny)
+library(ggplot2)
+library(gridExtra)
+library(xts)
+
+ui <- fluidPage(theme = shinytheme("superhero"),titlePanel("Hourly Data"),
                 fluidRow(
                   column(6,
                          fluidRow(
@@ -23,10 +28,8 @@ ui <- fluidPage(theme = shinytheme("superhero"),
                 )
 )
 
-library(shiny)
-library(ggplot2)
-library(gridExtra)
-library(xts)
+
+
 server <- function(input, output) {
   variable01 <- reactive({input$variable01})
   variable02 <- reactive({input$variable02})
