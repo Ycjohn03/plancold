@@ -32,8 +32,8 @@ ui <- fluidPage(theme = shinytheme("superhero"),titlePanel("Hourly Data"),
 
 
 server <- function(input, output) {
-  variable01 <- reactive({as.data.frame(input$variable01)})
-  variable02 <- reactive({as.data.frame(input$variable02)})
+  variable01 <- reactive({data.frame(input$variable01)})
+  variable02 <- reactive({data.frame(input$variable02)})
   # Create scatterplot object the plotOutput function is expecting
   output$p1plot <- renderPlot({
     myData01 <- subset(data.t_hour, select=c(variable01(),variable02()))
